@@ -21,7 +21,7 @@ const description = 'CommonAgent 是一个通用智能体平台，为开发者�
   background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
   color: white;
   width: 100%;
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
   margin: 0;
   min-height: 60vh;
   display: flex;

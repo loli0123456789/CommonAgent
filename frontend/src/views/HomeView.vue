@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import PlatformIntro from '../components/PlatformIntro.vue'
 import CoreFeatures from '../components/CoreFeatures.vue'
-
+import QuickStart from '../components/QuickStart.vue'
 
 const features = ref([
   {
@@ -33,17 +33,25 @@ const features = ref([
       <CoreFeatures :features="features" />
     </section>
 
+    <section class="quickstart-section">
+      <h2 class="section-title">快速开始</h2>
+      <QuickStart />
+    </section>
+
+    <footer class="footer">
+      <router-link to="/docs/api">API文档</router-link>
+    </footer>
     
   </div>
 </template>
 
 <style>
 .home-view {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;*/
   width: 100%; /* 确保宽度占满父容器 */
-  margin-top: 5rem;
+  margin-top: 2rem;
 }
 
 .section-title {
@@ -53,8 +61,8 @@ const features = ref([
 }
 
 .features-section {
-  margin: 3rem 0;
-  padding: 0 20px; /* 添加内边距以确保内容不贴边 */
+  /* margin: 3rem 0;
+  padding: 0 20px;*/ /* 添加内边距以确保内容不贴边 */
 }
 
 .platform-intro {
@@ -63,7 +71,14 @@ const features = ref([
 }
 
 .quickstart-section {
-  margin: 3rem 0;
+  margin: 2rem 0;
+}
+
+.footer {
+  margin-top: 4rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
 }
 
 </style>

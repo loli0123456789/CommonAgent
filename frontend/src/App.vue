@@ -23,7 +23,7 @@ import NavBar from './components/NavBar.vue'
 }
 
 html, body {
-  height: 100%;
+  /* height: 100%; */
 }
 
 .app {
@@ -36,14 +36,14 @@ html, body {
 .main-layout {
   display: flex;
   flex: 1;
-  margin-top: 100px;
+  margin-top: 60px;
   padding-left: 250px;
   width: 100%; /* 确保父容器宽度为100% */
 }
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1rem;
   width: calc(100% - 250px);
   overflow: auto;
 }

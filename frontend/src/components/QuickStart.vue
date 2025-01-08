@@ -43,7 +43,7 @@ const steps = [
   display: grid;
   gap: 1.5rem;
   max-width: 800px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .step-card {
