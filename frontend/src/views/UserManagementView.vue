@@ -66,7 +66,7 @@ export default defineComponent({
 
 <style scoped>
 .user-management {
-  padding: 20px;
+  padding: 0px;
 }
 
 table {

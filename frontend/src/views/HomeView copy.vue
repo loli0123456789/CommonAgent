@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import PlatformIntro from '../components/PlatformIntro.vue'
 import CoreFeatures from '../components/CoreFeatures.vue'
-
+import QuickStart from '../components/QuickStart.vue'
 
 const features = ref([
   {
@@ -21,29 +21,38 @@ const features = ref([
     icon: 'integration'
   }
 ])
-
 </script>
 
 <template>
   <div class="home-view">
     <PlatformIntro />
-
+    
     <section class="features-section">
       <h2 class="section-title">核心功能</h2>
       <CoreFeatures :features="features" />
     </section>
 
+    <section class="quickstart-section">
+      <h2 class="section-title">快速开始</h2>
+      <QuickStart />
+    </section>
+
     
+
+    <footer class="footer">
+      <router-link to="/docs/api">API文档</router-link>
+    </footer>
   </div>
 </template>
 
-<style>
+<style scoped>
 .home-view {
+  width: 100%;
+  height: 100%;
+  padding: 4rem 2rem 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%; /* 确保宽度占满父容器 */
-  margin-top: 5rem;
+  overflow: auto;
 }
 
 .section-title {
@@ -54,16 +63,16 @@ const features = ref([
 
 .features-section {
   margin: 3rem 0;
-  padding: 0 20px; /* 添加内边距以确保内容不贴边 */
-}
-
-.platform-intro {
-  padding: 20px;
-  flex: 1;
 }
 
 .quickstart-section {
   margin: 3rem 0;
 }
 
+.footer {
+  margin-top: 4rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
 </style>
