@@ -1,0 +1,113 @@
+<script setup lang="ts">
+const navItems = [
+  { name: '首页', path: '/' },
+  { 
+    name: '系统管理',
+    children: [
+      { name: '用户管理', path: '/users' }
+    ]
+  },
+  { name: '关于', path: '/about' },
+  { name: '文档', path: '/docs' },
+  { name: 'API', path: '/docs/api' }
+]
+</script>
+
+<template>
+  <nav class="navbar">
+    <div class="container">
+      <router-link to="/" class="logo">CommonAgent</router-link>
+      <ul class="nav-list">
+        <li v-for="item in navItems" :key="item.path || item.name" class="nav-item">
+          <template v-if="item.children">
+            <div class="nav-group">
+              <span class="nav-group-title">{{ item.name }}</span>
+              <ul class="nav-sub-list">
+                <li v-for="child in item.children" :key="child.path" class="nav-sub-item">
+                  <router-link :to="child.path" class="nav-link">
+                    {{ child.name }}
+                  </router-link>
+                </li>
+              </ul>
+            </div>
+          </template>
+          <template v-else>
+            <router-link :to="item.path" class="nav-link">
+              {{ item.name }}
+            </router-link>
+          </template>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<style scoped>
+.navbar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: var(--color-background-soft);
+  border-right: 1px solid var(--color-border);
+}
+
+.container {
+  padding: 2rem 1rem;
+}
+
+.logo {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 0.5rem 0;
+}
+
+.nav-group-title {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.nav-sub-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 1rem;
+}
+
+.nav-sub-item {
+  margin: 0.25rem 0;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.nav-link:hover {
+  background: var(--color-background-mute);
+}
+
+.router-link-active {
+  background: var(--color-background-mute);
+  font-weight: bold;
+}
+</style>

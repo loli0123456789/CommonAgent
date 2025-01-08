@@ -1,0 +1,14 @@
+{
+  "context": {
+    "last_activity": "初始化上下文文件",
+    "timestamp": "2024-01-15T10:00:00Z",
+    "notes": [],
+    "interactions": [
+      {
+        "timestamp": "2024-01-15T10:05:00Z",
+        "type": "file_structure_update",
+        "description": "添加interactions数组以记录每次交互"
+      }
+    ]
+  }
+}
