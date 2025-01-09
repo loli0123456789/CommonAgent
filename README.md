@@ -3,6 +3,8 @@
 ## 项目概述
 CommonAgent 是一个通用智能体平台，旨在为开发者提供构建AI应用的统一框架和工具集。
 
+A lightweight framework for a simple agent, which is utilized for studying AI and, at the same time, for acquiring knowledge about frontend and backend development.
+
 ## 技术栈
 - 后端：FastAPI + Uvicorn
 - 前端：Vue 3 + TypeScript
