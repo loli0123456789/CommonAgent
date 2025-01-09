@@ -23,7 +23,12 @@ const handleRegister = async () => {
     )
     router.push('/login')
   } catch (err) {
-    error.value = err.response?.data?.detail || '注册失败'
+    if (err instanceof Error && 'response' in err) {
+      const axiosError = err as { response?: { data?: { detail?: string } } }
+      error.value = axiosError.response?.data?.detail || '注册失败'
+    } else {
+      error.value = '注册失败'
+    }
   } finally {
     loading.value = false
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { FeatureItem } from '../types'
+import type { FeatureItem } from '../types'
 
 defineProps<{
   features: FeatureItem[]
