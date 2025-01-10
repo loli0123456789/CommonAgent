@@ -13,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print(os.path.dirname(os.path.abspath(__file__)))
 # print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config.database import init_db
+from db.database import init_db
 
 # Import core modules
 from models import *
@@ -27,9 +27,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, default=8000, help="Port to run the server on")
 parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to")
 
-# @app.on_event("startup")
-# async def startup():
-#     await init_db()
+@app.on_event("startup")
+async def startup():
+    await init_db()
 
 from routers import user
 

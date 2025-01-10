@@ -10,7 +10,7 @@ import time
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from models.user import User
-from config.database import get_db
+from db.database import get_db
 from schemas.user import UserCreate, UserLogin
 from utils.security import get_password_hash, verify_password
 

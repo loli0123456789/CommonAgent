@@ -16,6 +16,7 @@ EXPOSE 8000
 # 定义环境变量
 # ENV NAME World
 ENV DATABASE_URL mysql+asyncmy://myagent:oHkbvF8r4F7eju9K@mysql2.sqlpub.com:3307/myagent
+ENV ENV production
 
 # 在容器启动时运行 main.py
 CMD ["python", "main.py"]

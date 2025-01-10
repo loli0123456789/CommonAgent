@@ -1,14 +1,12 @@
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import text
+
+import sys
 import os
 
-from dotenv import load_dotenv
-
-_=load_dotenv()
-
-# 数据库配置
-DATABASE_URL = os.getenv("DATABASE_URL", "mysql+asyncmy://root:password@localhost/commonagent")
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config.config import DATABASE_URL
 
 # 创建异步引擎
 engine = create_async_engine(DATABASE_URL, echo=True)
@@ -22,8 +20,7 @@ AsyncSessionLocal = sessionmaker(
 
 async def init_db():
     async with AsyncSessionLocal() as session:
-        # await session.execute(text("SELECT 1"))
-        await session.execute(text("Create table test(id int)"))
+        await session.execute(text("SELECT 1"))
         print("Database connection successful")
 
 async def get_db():
