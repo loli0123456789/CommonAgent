@@ -45,7 +45,7 @@ app.add_middleware(
 # 注册用户路由
 app.include_router(user.router)
 
-@app.get("/")
+@app.get("/api/")
 async def root():
     return {
         "code": 200,
