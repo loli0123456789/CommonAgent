@@ -10,3 +10,5 @@ asyncmy==0.2.7
 pydantic[email]
 passlib
 python-jose
+
+openai

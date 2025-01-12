@@ -20,12 +20,13 @@ CommonAgent/
 ├── frontend/           # 前端源代码
 ├── src/                # 后端源代码
 ├── tests/              # 测试代码
-|── README.md           # 项目说明
+├── README.md           # 项目说明
 └── requirements.txt    # Python依赖
 ```
 
 ## 快速开始
 - 后端
+
 cd src
 
 conda create -n commonagent
@@ -37,6 +38,7 @@ pip install -r requirements.txt
 python main.py
 
 - 前端
+
 cd frontend
 
 npm install
@@ -49,6 +51,7 @@ npm run dev
 
 ## docker部署
 - 后端
+
 cd src
 
 docker build -t backend:01 .
@@ -60,6 +63,7 @@ docker run -d -p 8000:8000 --name backend backend:01
     在src下dockerfile定义了docker构建信息，需要修改相关配置
 
 - 前端
+
 cd frontend
 
 docker build -t frontend:01 .
