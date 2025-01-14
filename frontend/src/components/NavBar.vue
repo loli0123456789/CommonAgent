@@ -2,6 +2,12 @@
 const navItems = [
   { name: '首页', path: '/' },
   { 
+    name: 'AI',
+    children: [
+      { name: 'AI Chat', path: '/chat' }
+    ]
+  },
+  { 
     name: '系统管理',
     children: [
       { name: '用户管理', path: '/users' }

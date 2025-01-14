@@ -32,6 +32,7 @@ async def startup():
     await init_db()
 
 from routers import user
+from experiment import chat
 
 # 添加CORS中间件
 app.add_middleware(
@@ -44,6 +45,9 @@ app.add_middleware(
 
 # 注册用户路由
 app.include_router(user.router)
+
+# 注册chat路由
+app.include_router(chat.router)
 
 @app.get("/api/")
 async def root():

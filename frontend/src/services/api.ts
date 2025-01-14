@@ -25,4 +25,9 @@ export const userService = {
   getUsers: () => api.get('/users').then(res => res.data.data)
 };
 
+export const chatService = {
+  chat: (message: string, conversation_id: string,model:string) =>
+    api.post('/chat', { message, conversation_id,model })
+};
+
 export default api;
