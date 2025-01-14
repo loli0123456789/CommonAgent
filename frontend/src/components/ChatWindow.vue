@@ -6,8 +6,11 @@
       </div>
     </div>
     <div class="input-area">
-      <input v-model="inputText" @keyup.enter="sendMessage" placeholder="输入消息..." />
-      <button @click="sendMessage">发送</button>
+      <input v-model="inputText" @keyup.enter="sendMessage" placeholder="输入消息..." :disabled="isLoading" />
+      <button @click="sendMessage" :disabled="isLoading">
+        <span v-if="!isLoading">发送</span>
+        <div v-else class="loading-indicator"></div>
+      </button>
     </div>
   </div>
 </template>
@@ -29,6 +32,7 @@ const chatStore = useChatStore()
 const inputText = ref("")
 const messages = ref<Message[]>([])
 const messagesContainer = ref<HTMLElement | null>(null)
+const isLoading = ref(false)
 
 const scrollToBottom = () => {
   nextTick(() => {
@@ -54,6 +58,7 @@ const sendMessage = async () => {
   const aiMessageIndex = messages.value.length - 1
   
   try {
+    isLoading.value = true
     const responseStream = chatStore.sendMessage(inputText.value)
     
     for await (const chunk of responseStream) {
@@ -78,6 +83,7 @@ const sendMessage = async () => {
   }
   
   inputText.value = ""
+  isLoading.value = false
 }
 </script>
 
@@ -148,16 +154,15 @@ const sendMessage = async () => {
 }
 
 .loading-indicator {
-  position: absolute;
-  right: 100px;
-  top: 50%;
-  transform: translateY(-50%);
   width: 20px;
   height: 20px;
   border: 2px solid #f3f3f3;
   border-top: 2px solid #3498db;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  margin: 0 auto;
+  position: relative;
+  top: 10px;
 }
 
 @keyframes spin {
