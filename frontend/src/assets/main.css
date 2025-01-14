@@ -28,8 +28,23 @@ a,
   }
 
   #app {
-    display: flex; /* 保持 flex 布局 */
-    flex-direction: column; /* 确保子元素垂直排列 */
+    display: flex;
+    flex-direction: column;
     padding: 0 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 60px;
+  }
+
+  .section-title {
+    font-size: 1.2rem;
+  }
+
+  .features-section,
+  .quickstart-section {
+    padding: 0 1rem;
   }
 }

@@ -47,11 +47,20 @@ const features = ref([
 
 <style>
 .home-view {
-  /* display: flex;
-  flex-direction: column;
-  align-items: center;*/
-  width: 100%; /* 确保宽度占满父容器 */
+  width: 100%;
   margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .home-view {
+    padding: 0 1rem;
+    margin-top: 4rem;
+    margin-left: 0;
+    width: 100%;
+    position: relative;
+    left: 0;
+  }
 }
 
 .section-title {
@@ -61,17 +70,20 @@ const features = ref([
 }
 
 .features-section {
-  /* margin: 3rem 0;
-  padding: 0 20px;*/ /* 添加内边距以确保内容不贴边 */
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .platform-intro {
   padding: 20px;
   flex: 1;
+  width: 100%;
 }
 
 .quickstart-section {
   margin: 2rem 0;
+  width: 100%;
 }
 
 .footer {
@@ -79,6 +91,7 @@ const features = ref([
   padding: 1rem 0;
   border-top: 1px solid var(--color-border);
   text-align: center;
+  width: 100%;
 }
 
 </style>
