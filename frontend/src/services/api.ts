@@ -26,8 +26,54 @@ export const userService = {
 };
 
 export const chatService = {
-  chat: (message: string, conversation_id: string,model:string) =>
-    api.post('/chat', { message, conversation_id,model })
+  chat: async function* (message: string, conversationId: string, model: string) {
+    const response = await fetch(`${api.defaults.baseURL}/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message,
+        conversation_id: conversationId,
+        model
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+      throw new Error('Failed to get reader from response');
+    }
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+    
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      
+      buffer += decoder.decode(value, { stream: true });
+      
+      // Process complete SSE messages
+      while (buffer.includes('\n\n')) {
+        const messageEnd = buffer.indexOf('\n\n');
+        const message = buffer.slice(0, messageEnd);
+        buffer = buffer.slice(messageEnd + 2);
+        
+        if (message.startsWith('data: ')) {
+          yield message.slice(6); // Remove 'data: ' prefix
+        }
+      }
+    }
+    
+    // Process any remaining data
+    if (buffer.startsWith('data: ')) {
+      yield buffer.slice(6);
+    }
+  }
 };
 
 export default api;

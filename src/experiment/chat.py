@@ -28,6 +28,8 @@ class ChatRequest(BaseModel):
     model: str = "zhipu"
     conversation_id: str = None
 
+from fastapi.responses import StreamingResponse
+
 class ChatResponse(BaseModel):
     response: str
     conversation_id: str = None
@@ -35,8 +37,28 @@ class ChatResponse(BaseModel):
 # 对话上下文管理
 conversations: Dict[str, List[Dict]] = {}
 
+async def generate_response_stream(client, config, conversation_id):
+    completion = client.chat.completions.create(
+        model=config["model"],
+        messages=conversations[conversation_id],
+        stream=True
+    )
+    
+    full_response = ""
+    for chunk in completion:
+        content = chunk.choices[0].delta.content
+        if content:
+            full_response += content
+            yield f"data: {content}\n\n"
+    
+    # 保存完整回复
+    conversations[conversation_id].append({
+        "role": "assistant",
+        "content": full_response
+    })
+
 @router.post("/chat")
-def chat_endpoint(request: ChatRequest) -> ChatResponse:
+async def chat_endpoint(request: ChatRequest):
     try:
         # 参数校验
         if not request.message.strip():
@@ -63,23 +85,15 @@ def chat_endpoint(request: ChatRequest) -> ChatResponse:
         })
         
         # 调用模型
-        client = ZhipuAI(mod,api_key=config["api_key"], base_url=config["base_url"])
-        completion = client.chat.completions.create(
-            model=config["model"],
-            messages=conversations[request.conversation_id]
-        )
+        client = ZhipuAI(api_key=config["api_key"], base_url=config["base_url"])
         
-        # 添加助手回复
-        response = completion.choices[0].message.content
-        conversations[request.conversation_id].append({
-            "role": "assistant",
-            "content": response
-        })
-        
-        return ChatResponse(
-            response=response,
-            conversation_id=request.conversation_id
+        response = StreamingResponse(
+            generate_response_stream(client, config, request.conversation_id),
+            media_type="text/event-stream"
         )
+        response.headers["X-Accel-Buffering"] = "no"
+        response.headers["Cache-Control"] = "no-cache"
+        return response
         
     except Exception as e:
         logger.error(f"对话请求失败: {str(e)}")

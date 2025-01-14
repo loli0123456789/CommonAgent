@@ -1,5 +1,4 @@
 from typing import Any, Dict
-from openai import OpenAI
 
 import os
 

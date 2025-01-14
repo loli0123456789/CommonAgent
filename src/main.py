@@ -27,9 +27,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--port", type=int, default=8000, help="Port to run the server on")
 parser.add_argument("--host", type=str, default="0.0.0.0", help="Host to bind the server to")
 
+async def retry_init_db(retry_times=3):
+    for i in range(retry_times):
+        try:
+            await init_db()
+            break
+        except Exception as e:
+            print(f"Failed to connect to database, retrying... ({i+1}/{retry_times})")
+            time.sleep(1)
+
 @app.on_event("startup")
 async def startup():
-    await init_db()
+    await retry_init_db()
 
 from routers import user
 from experiment import chat

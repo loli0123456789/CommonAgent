@@ -1,6 +1,6 @@
 <template>
   <div class="chat-window">
-    <div class="messages">
+    <div class="messages" ref="messagesContainer">
       <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.role]">
         {{ msg.content }}
       </div>
@@ -13,8 +13,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue"
+import { ref, nextTick, onMounted } from "vue"
 import { useChatStore } from "@/stores/chat"
+
+onMounted(() => {
+  scrollToBottom()
+})
 
 interface Message {
   role: string
@@ -24,25 +28,53 @@ interface Message {
 const chatStore = useChatStore()
 const inputText = ref("")
 const messages = ref<Message[]>([])
+const messagesContainer = ref<HTMLElement | null>(null)
 
+const scrollToBottom = () => {
+  nextTick(() => {
+    if (messagesContainer.value) {
+      messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
+    }
+  })
+}
 const sendMessage = async () => {
   if (!inputText.value.trim()) return
   
-  const userMessage: Message = { 
-    role: "user", 
-    content: inputText.value 
-  }
-  messages.value.push(userMessage)
+  // 添加用户消息
+  messages.value = [...messages.value, {
+    role: "user",
+    content: inputText.value
+  }]
+  
+  // 添加空的AI消息占位符
+  messages.value = [...messages.value, {
+    role: "assistant",
+    content: ""
+  }]
+  const aiMessageIndex = messages.value.length - 1
   
   try {
-    const response = await chatStore.sendMessage(inputText.value)
-    const aiMessage: Message = { 
-      role: "assistant", 
-      content: response.response 
+    const responseStream = chatStore.sendMessage(inputText.value)
+    
+    for await (const chunk of responseStream) {
+      // 创建新消息对象强制触发更新
+      // const newMessages = messages.value.map((msg, index) =>
+      //   index === aiMessageIndex
+      //     ? { ...msg, content: msg.content + chunk }
+      //     : msg
+      // )
+      // messages.value = newMessages
+
+      messages.value[aiMessageIndex].content += chunk
+
+      scrollToBottom()
     }
-    messages.value.push(aiMessage)
   } catch (error) {
     console.error("发送消息失败：", error)
+    messages.value = [...messages.value, {
+      role: "system",
+      content: "消息发送失败，请稍后重试"
+    }]
   }
   
   inputText.value = ""
@@ -62,6 +94,8 @@ const sendMessage = async () => {
   flex: 1;
   overflow-y: auto;
   padding: 8px;
+  padding-bottom: 20px;
+  scroll-behavior: smooth;
 }
 
 .message {
@@ -69,22 +103,66 @@ const sendMessage = async () => {
   padding: 6px 10px;
   border-radius: 8px;
   max-width: 80%;
+  white-space: pre-wrap;
 }
 
 .message.user {
   background: #e3f2fd;
   margin-left: auto;
+  position: relative;
+}
+
+.message.user::after {
+  content: "";
+  width: 8px;
+  height: 16px;
+  background: #e3f2fd;
+  position: absolute;
+  bottom: -8px;
+  right: 10px;
+  clip-path: polygon(0 0, 0% 100%, 100% 0);
 }
 
 .message.assistant {
   background: #f5f5f5;
   margin-right: auto;
+  position: relative;
+}
+
+.message.assistant::after {
+  content: "";
+  width: 8px;
+  height: 16px;
+  background: #f5f5f5;
+  position: absolute;
+  bottom: -8px;
+  left: 10px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
 }
 
 .input-area {
   display: flex;
   padding: 10px;
   border-top: 1px solid #eee;
+  position: relative;
+}
+
+.loading-indicator {
+  position: absolute;
+  right: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
 }
 
 .input-area input {
