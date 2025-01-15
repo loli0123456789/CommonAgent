@@ -20,5 +20,10 @@ MODEL_CONFIG = {
         "api_key": os.getenv("SHUSHENG_API_KEY"),
         "base_url": os.getenv("SHUSHENG_BASE_URL"),
         "model": "internlm2.5-latest"
+    },
+    "moonshot": {
+        "api_key": os.getenv("MOONSHOT_API_KEY"),
+        "base_url": os.getenv("MOONSHOT_BASE_URL"),
+        "model": "moonshot-v1-32k"
     }
 }

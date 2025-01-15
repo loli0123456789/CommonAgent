@@ -11,6 +11,7 @@ from config.modelConfig import MODEL_CONFIG
 
 from zhipuAI import ZhipuAI
 from shushengAI import ShushengAI
+from moonshotAI import MoonshotAI
 
 router = APIRouter(prefix="/api", tags=["users"])
 
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 # 请求响应模型
 class ChatRequest(BaseModel):
     message: str
-    model: str = "zhipu"
+    model: str = "moonshot"
     conversation_id: str = None
 
 from fastapi.responses import StreamingResponse
@@ -85,7 +86,7 @@ async def chat_endpoint(request: ChatRequest):
         })
         
         # 调用模型
-        client = ZhipuAI(api_key=config["api_key"], base_url=config["base_url"])
+        client = MoonshotAI(api_key=config["api_key"], base_url=config["base_url"])
         
         response = StreamingResponse(
             generate_response_stream(client, config, request.conversation_id),
