@@ -73,6 +73,9 @@ const sendMessage = async () => {
       messages.value[aiMessageIndex].content += chunk
 
       scrollToBottom()
+
+      // 在 for await 循环中添加
+      await new Promise(resolve => setTimeout(resolve, 20)) // 通过延迟解决流式输出
     }
   } catch (error) {
     console.error("发送消息失败：", error)

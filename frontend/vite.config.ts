@@ -23,6 +23,14 @@ export default defineConfig(({ mode }) => {
       'process.env.API_URL': JSON.stringify(
         isProduction ? env.VITE_PROD_API_URL : env.VITE_DEV_API_URL
       )
+    },
+    server: {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+      },
+      hmr: {
+        overlay: false,
+      }
     }
   }
 })
