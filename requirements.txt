@@ -12,3 +12,6 @@ passlib
 python-jose
 
 openai
+
+pandas
+openpyxl

@@ -9,9 +9,9 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from config.modelConfig import MODEL_CONFIG
 
-from zhipuAI import ZhipuAI
-from shushengAI import ShushengAI
-from moonshotAI import MoonshotAI
+from ai_model.zhipuAI import ZhipuAI
+from ai_model.shushengAI import ShushengAI
+from ai_model.moonshotAI import MoonshotAI
 
 router = APIRouter(prefix="/api", tags=["users"])
 

@@ -30,3 +30,13 @@ async def get_db():
 import asyncio
 if __name__=="__main__":
     asyncio.run(init_db())
+    
+async def excute_sql(sql:str):
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(text(sql))
+        if result.returns_rows:
+            rows = result.fetchall()
+            return rows
+        
+        return "no data"
+
